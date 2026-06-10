@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "invest-analyzer"
+version = "0.1.0"
+description = "智能投资评分与定投系统"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.27.0",
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.2.0",
+    "sqlalchemy>=2.0.0",
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    "yfinance>=0.2.36",
+    "httpx>=0.27.0",
+    "apscheduler>=3.10.0",
+    "pyyaml>=6.0.1",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[project.scripts]
+invest-crawl = "invest.jobs.daily_crawl:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["invest*"]

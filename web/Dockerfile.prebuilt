@@ -1,0 +1,21 @@
+# 在宿主机先执行: cd web && npm ci && npm run build
+# 再构建镜像: docker build -f Dockerfile.prebuilt -t invest-analyzer-web .
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN addgroup -g 1001 nodejs && adduser -u 1001 -G nodejs -D nextjs
+
+COPY public ./public
+COPY .next/standalone ./
+COPY .next/static ./.next/static
+
+USER nextjs
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+ENV API_INTERNAL_URL=http://api:8001
+
+CMD ["node", "server.js"]

@@ -1,0 +1,94 @@
+# 维度权重 — 越高分表示越「谨慎/偏贵/偏热」
+# 各维度内指标等权或可在 metric 级扩展 weight
+
+profiles:
+  # 纳斯达克100（见 docs/NDX_SCORING.md）
+  ndx:
+    valuation: 0.28
+    sentiment: 0.18
+    drawdown: 0.10
+    breadth: 0.10
+    macro: 0.20
+    trend: 0.14
+
+  # 标普500（见 docs/SPX_SCORING.md，与 NDX 指标/数据/权重均独立）
+  spx:
+    valuation: 0.26
+    sentiment: 0.17
+    drawdown: 0.12
+    breadth: 0.12
+    macro: 0.21
+    trend: 0.12
+
+  nasdaq:
+  # 旧版纳指模板（仅作未覆盖标的的默认，NDX 已用 ndx）
+    trend: 0.22
+    momentum: 0.18
+    vol: 0.22
+    valuation: 0.23
+    macro: 0.15
+
+  sp500:
+  # 已废弃：请使用 spx；保留键避免旧配置报错
+    trend: 0.25
+    momentum: 0.17
+    vol: 0.18
+    valuation: 0.20
+    macro: 0.20
+
+  nikkei:
+    trend: 0.25
+    momentum: 0.18
+    vol: 0.20
+    valuation: 0.17
+    macro: 0.20   # 含 usdjpy
+
+  dax:
+    trend: 0.24
+    momentum: 0.17
+    vol: 0.22     # vdax/atr
+    valuation: 0.17
+    macro: 0.20   # 含 eurusd
+
+  cn_fund:
+  # 主动基金：弱化估值，强化动量与风险质量
+    trend: 0.18
+    momentum: 0.28
+    vol: 0.24
+    quality: 0.20
+    env: 0.10
+    # execution 不参与 S
+
+# 指标 → 维度内方向（归一化后是否反向）
+# high_is_cautious: true 表示原值越高，对「谨慎」贡献越大
+metric_direction:
+  rsi14: { high_is_cautious: true }
+  vix: { high_is_cautious: true }
+  vdax: { high_is_cautious: true }
+  pe_ttm_percentile_5y: { high_is_cautious: true }
+  price_percentile_5y: { high_is_cautious: true }
+  us10y: { high_is_cautious: true }
+  drawdown_52w: { high_is_cautious: false }
+  drawdown_6m_high: { high_is_cautious: false }
+  max_drawdown_1y: { high_is_cautious: true }
+  excess_vs_benchmark_6m: { high_is_cautious: true }
+  sharpe_1y: { high_is_cautious: false }
+  mom_12_1: { high_is_cautious: true }
+  # NDX 专用
+  pe_ttm: { high_is_cautious: true }
+  shiller_cape: { high_is_cautious: true }
+  erp_spread: { high_is_cautious: false }
+  pb: { high_is_cautious: true }
+  forward_pe_12m: { high_is_cautious: true }
+  cnn_fear_greed: { high_is_cautious: true }
+  put_call_ratio: { high_is_cautious: true }
+  ndx_pct_above_ma200: { high_is_cautious: true }
+  spx_pct_above_ma200: { high_is_cautious: true }
+  yield_curve_2s10s: { high_is_cautious: true }
+  fed_funds: { high_is_cautious: true }
+  fed_balance_sheet: { high_is_cautious: false }
+  ma50_ma200_cross: { high_is_cautious: true }
+  price_vs_ma200: { high_is_cautious: true }
+
+# 缺失维度数据时的权重重分配策略
+missing_dimension_policy: redistribute_proportional

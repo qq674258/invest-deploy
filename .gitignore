@@ -1,0 +1,32 @@
+# --- Python ---
+.venv/
+__pycache__/
+*.py[cod]
+dist/
+*.egg-info/
+.pytest_cache/
+
+# --- Node / Web ---
+web/node_modules/
+web/.next/
+web/.env.local
+web/out/
+web/tsconfig.tsbuildinfo
+
+# --- Environment & Secrets ---
+.env
+data/alert_config.override.yaml
+data/crawl_config.override.yaml
+deepseek.txt
+
+# --- Runtime data ---
+data/*.db
+data/*.db-journal
+data/alert_state.json
+_dash.json
+chart_test.json
+
+# --- Build artifacts ---
+*.tar.gz
+*.tgz
+invest-deploy.tar.gz
