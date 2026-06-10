@@ -1,0 +1,68 @@
+# DeepSeek 中文解读 — Prompt 与输出 Schema 草案
+
+model:
+  provider: deepseek
+  env_key: DEEPSEEK_API_KEY
+  model_id: deepseek-chat  # Pro 账号以控制台为准
+  temperature: 0.4
+  max_tokens: 1200
+
+system_prompt: |
+  你是一位专业的中文投资研究助手，负责解读量化系统已计算好的评分与定投建议。
+  规则：
+  1. 仅使用用户提供的结构化数据，不得编造数字、日期或新闻。
+  2. 不得修改综合分 S、各维度分、建议定投金额；如需提及金额，必须与输入完全一致。
+  3. 不得承诺收益或暗示保本。
+  4. 输出必须为合法 JSON，符合给定 schema，不要 markdown 包裹。
+  5. 语言：简体中文，专业、克制、可读。
+
+user_prompt_template: |
+  标的：{display_name}（{instrument_id}）
+  资产类型：{asset_class}
+  数据截至：{as_of_date}
+  数据状态：{data_status}
+
+  综合评分 S（0-100，越高越谨慎）：{s}
+  维度分（0-100）：{dimension_scores_json}
+  关键指标快照：{indicators_json}
+
+  用户定投设置：
+  - 计划金额 P：{planned_amount}
+  - 激进倍数 M：{multiplier_max}
+  - 频率：{frequency_label}
+  - 今日是否定投日：{is_dca_day}
+  - 系统建议定投金额：{suggested_amount}（请勿修改此数字）
+
+  请生成今日中文解读报告。
+
+output_schema:
+  type: object
+  required: [summary, risk_level, drivers, caution, confidence]
+  properties:
+    summary:
+      type: string
+      description: 1-2 句话总评
+    risk_level:
+      type: string
+      enum: [低, 中, 高]
+    drivers:
+      type: array
+      items: { type: string }
+      maxItems: 5
+    caution:
+      type: array
+      items: { type: string }
+      maxItems: 4
+    confidence:
+      type: string
+      enum: [低, 中, 高]
+    vs_last_period:
+      type: string
+      description: 与上期对比（可选）
+
+fallback:
+  on_api_failure: template_only
+  template: |
+    【数据解读暂不可用】
+    {display_name} 综合评分 S={s}，建议定投 {suggested_amount} 元。
+    请稍后重试或查看指标明细。本内容不构成投资建议。

@@ -1,0 +1,88 @@
+name: invest-analyzer
+
+# 复制 .env.docker.example 为 .env 可覆盖镜像地址
+# 默认使用 DaoCloud 拉取 python:3.12（绕过已失效的 163 等镜像加速器）
+
+# 对外端口（避免与宿主机其他项目 3000/8000 冲突，可在 .env 覆盖）
+# WEB_HOST_PORT=3009
+# API_HOST_PORT=18001
+
+x-build: &default_build
+  context: .
+  args:
+    PYTHON_IMAGE: ${PYTHON_IMAGE:-docker.m.daocloud.io/library/python:3.12-slim-bookworm}
+    PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.tuna.tsinghua.edu.cn/simple}
+
+# 挂载本地 invest 代码，改 Python 后无需重建镜像（依赖变更仍需 build）
+x-api-volumes: &api_volumes
+  - ./data:/app/data
+  - ./config:/app/config:ro
+  - ./invest:/app/invest
+
+services:
+  invest:
+    build: *default_build
+    container_name: invest-analyzer
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: sqlite:////app/data/invest.db
+    volumes: *api_volumes
+
+  crawl:
+    build: *default_build
+    profiles: [tools]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      HTTP_PROXY: ${HTTP_PROXY:-}
+      HTTPS_PROXY: ${HTTPS_PROXY:-}
+    volumes: *api_volumes
+    command: ["python", "-m", "invest.jobs.daily_crawl", "--job", "all", "--incremental", "--funds"]
+
+  api:
+    build: *default_build
+    container_name: invest-api
+    ports:
+      - "${API_HOST_PORT:-18001}:8001"
+    # 修改 invest/ 代码后必须 rebuild: docker compose build api --no-cache
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: sqlite:////app/data/invest.db
+      FRED_API_KEY: ${FRED_API_KEY:-}
+      # 定时采集在 api 容器内执行，需与 crawl 一样能访问 Yahoo/FRED
+      HTTP_PROXY: ${HTTP_PROXY:-}
+      HTTPS_PROXY: ${HTTPS_PROXY:-}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes: *api_volumes
+    command: ["uvicorn", "invest.api.main:app", "--host", "0.0.0.0", "--port", "8001"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/api/v1/health', timeout=5)",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 8
+      start_period: 15s
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: invest-web
+    ports:
+      - "${WEB_HOST_PORT:-3009}:3000"
+    environment:
+      API_INTERNAL_URL: http://api:8001
+    depends_on:
+      api:
+        condition: service_healthy

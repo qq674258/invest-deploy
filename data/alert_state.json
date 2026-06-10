@@ -1,0 +1,22 @@
+{
+  "NDX": {
+    "notified": [],
+    "last_dd_pct": 0.0,
+    "last_check": "2026-05-29T08:22:40.102365"
+  },
+  "SPX": {
+    "notified": [],
+    "last_dd_pct": 0.0,
+    "last_check": "2026-05-29T08:22:40.350562"
+  },
+  "N225": {
+    "notified": [],
+    "last_dd_pct": 0.0,
+    "last_check": "2026-05-29T08:22:40.470432"
+  },
+  "DAX": {
+    "notified": [],
+    "last_dd_pct": -1.18,
+    "last_check": "2026-05-29T08:22:40.585335"
+  }
+}

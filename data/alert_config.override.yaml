@@ -1,0 +1,26 @@
+email:
+  enabled: true
+  smtp_host: smtp.126.com
+  smtp_port: 465
+  smtp_use_ssl: true
+  smtp_user: qq674258@126.com
+  smtp_password: SYempxufqb78Bd4z
+  from_addr: qq674258@126.com
+  to_addrs:
+  - qq674258@126.com
+  smtp_password_set: true
+drawdown:
+  enabled: true
+  instrument_ids:
+  - NDX
+  - SPX
+  - N225
+  - DAX
+  lookback_days: 60
+  thresholds_pct:
+  - 5
+  - 10
+  - 15
+  - 20
+  - 30
+  recover_above_pct: 4
