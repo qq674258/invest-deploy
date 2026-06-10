@@ -7,6 +7,23 @@ An investment analysis platform with quantitative scoring (S), smart DCA suggest
 
 ---
 
+## 核心亮点 / Key Features
+
+> **可灵活配置多档回撤阈值邮件提醒** — 支持同时设置多个 X% 回撤警戒点（如 5%、10%、15%、20%...），当指数或基金净值回撤触及阈值时自动发送邮件告警，助您及时把握买卖时机。
+>
+> **Flexible multi-level drawdown email alerts** — Configure multiple drawdown thresholds (e.g., 5%, 10%, 15%, 20%...) simultaneously. Get automated email notifications when index or fund NAV drawdown hits any threshold, helping you time your entries and exits.
+
+| 核心能力 Capability | 说明 Description |
+|---|---|
+| 🎯 多档回撤告警 / Multi-level drawdown alerts | 自由设定 N 个 X% 阈值，触发即邮件通知 / Set unlimited X% thresholds, email on trigger |
+| 📊 综合评分 S-Score | 趋势、动量、波动、估值、宏观五维加权评分 / 5-dimension weighted scoring |
+| 🤖 DeepSeek 中文解读 | 每日评分 + AI 解读投资信号 / Daily scores with AI-powered analysis |
+| 💰 智能定投 DCA | 基于评分系统的定投倍率建议 / Score-based DCA multiplier suggestions |
+| 📈 数据自动采集 | 定时爬取行情、宏观指标、基金净值 / Scheduled crawl for prices, macro, fund NAV |
+| 🔔 多场景告警 | 回撤、异常波动等可扩展告警体系 / Extendable alert system for drawdown, volatility, etc. |
+
+---
+
 ## 功能预览 / Feature Overview
 
 | 截图 Screenshot | 说明 Description |
