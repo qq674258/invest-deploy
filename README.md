@@ -1,7 +1,26 @@
 # 智能投资评分与定投系统 / Smart Investment Scoring & DCA System
 
-基于量化指标的综合评分 (S)、智能定投建议与 DeepSeek 中文解读的投资分析平台。
+[![Dashboard](webimage/dashboard.png)](webimage/dashboard.png)
+
+基于量化指标的综合评分（S）、智能定投建议与 DeepSeek 中文解读的投资分析平台。
 An investment analysis platform with quantitative scoring (S), smart DCA suggestions, and DeepSeek-powered Chinese analysis.
+
+---
+
+## 功能预览 / Feature Overview
+
+| 截图 Screenshot | 说明 Description |
+|---|---|
+| ![dashboard](webimage/dashboard.png) | **首页仪表盘** — 指数评分总览与市场健康度 / Dashboard with index scores & market health |
+| ![data-crawl](webimage/data-crawl.png) | **数据抓取** — 一键拉取行情、宏观指标 / One-click data crawl for prices & macro indicators |
+| ![fund-custom-entry](webimage/fund-custom-entry.png) | **自定义录入与管理** — 手动录入基金信息 / Custom fund entry & management |
+| ![fund-detail](webimage/fund-detail.png) | **基金详情** — 业绩、净值、持仓、经理档案 / Fund detail with performance, NAV, holdings, manager |
+| ![calculator](webimage/calculator.png) | **计算器** — 一次投入与复利计算 / Lump-sum & compound interest calculator |
+| ![lump-sum-calc](webimage/lump-sum-calc.png) | **一次投入产出计算** — 按日/周/月测算收益 / Invest & return projection by day/week/month |
+| ![compound-interest](webimage/compound-interest.png) | **复利计算** — 定投复利增长模拟 / DCA compound growth simulation |
+| ![multi-user](webimage/multi-user.png) | **多用户** — 多账户支持与权限管理 / Multi-user support & access control |
+| ![drawdown-alert-config](webimage/drawdown-alert-config.png) | **回撤提醒配置** — 自定义回撤阈值告警 / Custom drawdown threshold alerts |
+| ![auto-crawl-config](webimage/auto-crawl-config.png) | **自动采集配置** — 定时任务与采集参数 / Scheduled crawl & automation settings |
 
 ---
 
@@ -94,10 +113,15 @@ docker compose -p invest-analyzer logs -f api web
 
 ### 管理后台 / Admin Panel (M5)
 
+![data-crawl](webimage/data-crawl.png)
+
 - 指数分键拉取：纳斯达克100 / 标普500 / 日经 / DAX / Index crawl: NDX / SPX / N225 / DAX
 - 国内主动基金：录入前 **「解析基金信息」**；爬取含净值/持仓/交易规则/经理档案 / China active funds: parse, crawl NAV, holdings, manager profiles
 - 历史数据：查看、按日期去重、删除、重新爬取 / History: view, deduplicate, delete, re-crawl
 - 首页总览展示已启用的指数与国内基金 / Dashboard shows enabled indices & funds
+
+![fund-custom-entry](webimage/fund-custom-entry.png) | ![fund-detail](webimage/fund-detail.png)
+---|---
 
 本地仅跑前端 / Run frontend locally:
 
