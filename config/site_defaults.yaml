@@ -1,5 +1,0 @@
-# 站点配置（管理后台可覆盖，写入 data/site_config.override.yaml）
-
-site:
-  title: 投资回撤提醒-定投计算器工具
-  frontend_login_enabled: false
