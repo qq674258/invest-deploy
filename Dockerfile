@@ -1,6 +1,5 @@
-# 基础镜像可通过构建参数覆盖（国内镜像站失效时用）
-# 例: docker compose build --build-arg PYTHON_IMAGE=docker.m.daocloud.io/library/python:3.12-slim-bookworm
-ARG PYTHON_IMAGE=python:3.12-slim-bookworm
+# 国内用户可换 DaoCloud 镜像: --build-arg PYTHON_IMAGE=docker.m.daocloud.io/library/python:3.12-slim-bookworm
+ARG PYTHON_IMAGE=docker.m.daocloud.io/library/python:3.12-slim-bookworm
 FROM ${PYTHON_IMAGE}
 
 WORKDIR /app
@@ -15,15 +14,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements-docker.txt .
 
-ARG PIP_INDEX_URL=
-RUN if [ -n "$PIP_INDEX_URL" ]; then \
-      pip install --no-cache-dir -i "$PIP_INDEX_URL" -r requirements-docker.txt; \
-    else \
-      pip install --no-cache-dir -r requirements-docker.txt; \
-    fi
+# 国内用户可换清华 pip 源: --build-arg PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+ARG PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -i "$PIP_INDEX_URL" -r requirements-docker.txt
 
 COPY invest ./invest
 COPY config ./config
+COPY data ./data
 COPY tests ./tests
 COPY pyproject.toml setup.py ./
 

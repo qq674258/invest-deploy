@@ -63,7 +63,28 @@
 
 ### Docker 一键启动（推荐）
 
-在项目根目录执行（PowerShell）：
+#### 方式一：从 Docker Hub 拉取（无需本地构建）
+
+```powershell
+# 拉取预构建镜像
+docker pull caise007/invest-analyzer:latest
+
+# 克隆项目获取配置文件
+git clone https://github.com/caise007/invest-analyzer.git
+cd invest-analyzer
+
+# 环境配置（首次使用）
+copy .env.docker.example .env
+# 编辑 .env：ADMIN_USERNAME / ADMIN_PASSWORD、FRED_API_KEY、代理等
+
+# 写入行情与评分（首次或需重拉数据时，约数分钟）
+.\scripts\bootstrap-data.ps1
+
+# 后台启动 API + 前端
+docker compose -p invest-analyzer up -d api web
+```
+
+#### 方式二：本地构建
 
 ```powershell
 cd "d:\桌面\投资分析"
@@ -263,7 +284,28 @@ An investment analysis platform with quantitative scoring (S), smart DCA suggest
 
 ### One-Click Docker Setup (Recommended)
 
-Run from project root (PowerShell):
+#### Option A: Pull from Docker Hub (no local build needed)
+
+```powershell
+# Pull pre-built image
+docker pull caise007/invest-analyzer:latest
+
+# Clone project for config files
+git clone https://github.com/caise007/invest-analyzer.git
+cd invest-analyzer
+
+# Environment setup (first time)
+copy .env.docker.example .env
+# Edit .env: ADMIN_USERNAME / ADMIN_PASSWORD, FRED_API_KEY, proxy, etc.
+
+# Seed market data & scores (first time or refresh, takes a few minutes)
+.\scripts\bootstrap-data.ps1
+
+# Start API + frontend in background
+docker compose -p invest-analyzer up -d api web
+```
+
+#### Option B: Build Locally
 
 ```powershell
 cd "d:\桌面\投资分析"

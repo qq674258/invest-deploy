@@ -4,6 +4,21 @@ __pycache__
 .pytest_cache
 .git
 .env
+deepseek.txt
+
+# Runtime data — exclude db & state, keep override configs
+data/*.db
 data/*.db-journal
+data/alert_state.json
+
+# Build artifacts
+*.tar.gz
+*.tgz
+invest-deploy.tar.gz
+_dash.json
+chart_test.json
+webimage/
+
+# Docs (keep README.md)
 *.md
 !README.md
